@@ -1,6 +1,8 @@
 package tests;
 
 import com.codeborne.selenide.CollectionCondition;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.conditions.Visible;
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
@@ -19,6 +21,8 @@ import java.net.URL;
 import java.util.List;
 
 import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byClassName;
 import static com.codeborne.selenide.Selenide.*;
 import static io.appium.java_client.MobileBy.AccessibilityId;
@@ -65,6 +69,23 @@ class SearchTests extends TestBase {
         step("Verify content found", ()->
                 $$(className("android.widget.TextView"))
                         .shouldHave(CollectionCondition.sizeGreaterThan(0)));
+    }
+
+    @Test
+    @DisplayName("Successful search in wiki app and check main title")
+    void checkMainTitleOfSearchItem() {
+        step("Open application", ()-> open());
+
+        step("Type search", ()-> {
+            $(AccessibilityId("Search Wikipedia")).click();
+            $(MobileBy.id("org.wikipedia.alpha:id/search_src_text")).sendKeys("United States");
+        });
+
+        step("Click search item", ()->
+            $$(MobileBy.id("org.wikipedia.alpha:id/search_container")).get(0).shouldBe(visible).click());
+
+        step("Check main title", ()->
+            $(MobileBy.id("org.wikipedia.alpha:id/view_page_title_text")).shouldHave(text("United States")));
     }
 
     @Test
