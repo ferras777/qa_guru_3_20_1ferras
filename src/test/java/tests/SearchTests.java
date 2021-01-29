@@ -82,7 +82,7 @@ class SearchTests extends TestBase {
         });
 
         step("Click search item", ()->
-            $$(MobileBy.id("org.wikipedia.alpha:id/search_container")).get(0).shouldBe(visible).click());
+            $(MobileBy.id("org.wikipedia.alpha:id/search_container")).shouldBe(visible).click());
 
         step("Check main title", ()->
             $(MobileBy.id("org.wikipedia.alpha:id/view_page_title_text")).shouldHave(text("United States")));
